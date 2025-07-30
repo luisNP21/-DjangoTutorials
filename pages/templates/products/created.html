@@ -1,0 +1,24 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block header_title %}{{ subtitle }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body text-center">
+          <h2 class="text-success mb-4">Product Created!</h2>
+          <p class="lead">The product has been successfully created in the database.</p>
+          <div class="mt-4">
+            <a href="{% url 'index' %}" class="btn btn-primary me-2">View Products</a>
+            <a href="{% url 'form' %}" class="btn btn-secondary">Create Another Product</a>
+            <a href="{% url 'home' %}" class="btn btn-outline-primary">Go to Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
