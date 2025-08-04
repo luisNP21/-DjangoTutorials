@@ -17,12 +17,13 @@
                 {% endfor %}
               {% endfor %}
             </ul>
-          {% endif %}
+          {% endif  %}
 
           <form method="POST" action="{% url 'form' %}">
             {% csrf_token %}
             <input type="text" class="form-control mb-2" placeholder="Enter name" name="name" value="{{ form.data.name }}">
             <input type="text" class="form-control mb-2" placeholder="Enter price" name="price" value="{{ form.data.price }}">
+            <textarea class="form-control mb-2" placeholder="Enter description" name="description" rows="3">{{ form.data.description }}</textarea>
             <input type="submit" class="btn btn-primary" value="Send">
           </form>
 
