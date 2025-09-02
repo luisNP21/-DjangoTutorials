@@ -213,7 +213,7 @@ class ImageViewNoDI(View):
         return render(request, self.template_name, {'image_url': image_url})
 
     def post(self, request):
-        image_storage = ImageLocalStorage()  # Aquí se instancia directamente
+        image_storage = ImageLocalStorage()  
         image_url = image_storage.store(request)
         request.session['image_url'] = image_url
         return redirect('imagenodi_index')
