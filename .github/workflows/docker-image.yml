@@ -23,7 +23,7 @@ jobs:
 
       - name: Build the Docker image
         run: |
-          docker build randomquotes \
+          docker build randomquotes-flask-master \
             --file randomquotes/Dockerfile \
             --tag luisnp10/express-randomquotes:latest
 
