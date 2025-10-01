@@ -2,27 +2,31 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: docker login
-      env:
-        DOCKER_USER: ${{secrets.DOCKERHUB_USER}}
-        DOCKER_PASS: ${{secrets.DOCKERHUB_PASS}}
-      run: |
-        docker login -u $DOCKER_USER -p $DOCKER_PASS
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag nram94/flask-randomquotes:latest
-      
-    - name: Docker Push
-      run: docker push nram94/flask-randomquotes
+      - name: Checkout
+        uses: actions/checkout@v4
 
+      - name: Docker Login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKERHUB_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKERHUB_PASS }}   # o DOCKERHUB_TOKEN si así lo llamaste
+        run: |
+          echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+
+      - name: Build the Docker image
+        run: |
+          docker build randomquotes \
+            --file randomquotes/Dockerfile \
+            --tag luisnp10/express-randomquotes:latest
+
+      - name: Push Docker image
+        run: |
+          docker push luisnp10/express-randomquotes:latest
