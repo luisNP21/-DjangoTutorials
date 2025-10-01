@@ -2,21 +2,31 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]   # usa main, no master si tu repo está en main
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Login to Docker Hub
-      run: echo "${{ secrets.DOCKERHUB_PASS }}" | docker login -u "${{ secrets.DOCKERHUB_USER }}" --password-stdin
+      - name: Docker Login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKERHUB_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKERHUB_PASS }}   # o DOCKERHUB_TOKEN si así lo llamaste
+        run: |
+          echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
-    - name: Build and Push Docker image
-      run: |
-        docker build -t luisnp10/express-randomquotes .
-        docker push luisnp10/express-randomquotes
+      - name: Build the Docker image
+        run: |
+          docker build randomquotes \
+            --file randomquotes/Dockerfile \
+            --tag luisnp10/express-randomquotes:latest
+
+      - name: Push Docker image
+        run: |
+          docker push luisnp10/express-randomquotes:latest
